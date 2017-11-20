@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dmytrod.cademo.screens.home.MainActivity">
+    tools:context="com.dmytrod.cademo.screens.friends.FriendsActivity">
 
     <TextView
         android:layout_width="wrap_content"
