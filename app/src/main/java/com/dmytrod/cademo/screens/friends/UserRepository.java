@@ -10,4 +10,8 @@ class UserRepository {
     Observable<User> getUser(long userId) {
         return null;
     }
+
+    public Observable<UserStatus> getUserStatus(long userId) {
+        return null;
+    }
 }

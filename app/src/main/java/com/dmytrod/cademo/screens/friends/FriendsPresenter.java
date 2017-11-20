@@ -26,6 +26,7 @@ class FriendsPresenter extends BasePresenter<FriendsContract.View> implements Fr
 
     @Inject
     public FriendsPresenter(@NonNull GetUserUseCase getUserUseCase,
+                            @NonNull GetFriendsStatusesUseCase getFriendsStatusesUseCase,
                             @NonNull ErrorHandler errorHandler) {
         mGetUserUseCase = getUserUseCase;
         mErrorHandler = errorHandler;
