@@ -7,7 +7,7 @@ import rx.Observable;
  */
 
 class UserRepository {
-    public Observable<User> getUser(long userId) {
+    Observable<User> getUser(long userId) {
         return null;
     }
 }

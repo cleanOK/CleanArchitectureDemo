@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
  * Created by Dmytro Denysenko on 20.11.17.
  */
 
-public class FriendsContract {
+class FriendsContract {
     interface View {
 
         void displayFriend(@NonNull User user);

@@ -18,7 +18,7 @@ import static android.content.ContentValues.TAG;
 /**
  * Created by Dmytro Denysenko on 20.11.17.
  */
-public class FriendsPresenter extends BasePresenter<FriendsContract.View> implements FriendsContract.Presenter {
+class FriendsPresenter extends BasePresenter<FriendsContract.View> implements FriendsContract.Presenter {
 
     private final GetUserUseCase mGetUserUseCase;
     private final ErrorHandler mErrorHandler;

@@ -11,15 +11,15 @@ import rx.Observable;
  * Created by Dmytro Denysenko on 20.11.17.
  */
 
-public class GetUserUseCase extends UseCase<User> {
+class GetUserUseCase extends UseCase<User> {
     private final UserRepository mRepository;
     private long mUserId;
 
-    public GetUserUseCase(@NonNull UserRepository repository) {
+    GetUserUseCase(@NonNull UserRepository repository) {
         mRepository = repository;
     }
 
-    public void setUserId(@IntRange(from = 1) long userId) {
+    void setUserId(@IntRange(from = 1) long userId) {
         mUserId = userId;
     }
 
