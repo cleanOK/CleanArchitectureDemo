@@ -3,15 +3,11 @@ package com.dmytrod.cademo.screens.friends;
 import rx.Observable;
 
 /**
- * Created by Dmytro Denysenko on 20.11.17.
+ * Created by Dmytro Denysenko on 11/20/17.
  */
 
-class UserRepository {
-    Observable<User> getUser(long userId) {
-        return null;
-    }
+interface UserRepository {
+    Observable<User> getUser(long userId);
 
-    public Observable<UserStatus> getUserStatus(long userId) {
-        return null;
-    }
+    Observable<UserStatus> getUserStatus(long userId);
 }

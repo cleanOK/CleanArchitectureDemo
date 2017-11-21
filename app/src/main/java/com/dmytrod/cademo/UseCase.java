@@ -18,7 +18,6 @@ public abstract class UseCase<T> {
 
     private final Scheduler mThreadExecutor;
     private final Scheduler mPostExecutionThread;
-
     private Subscription subscription = Subscriptions.empty();
 
     public UseCase() {

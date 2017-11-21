@@ -21,6 +21,7 @@ import static android.content.ContentValues.TAG;
 class FriendsPresenter extends BasePresenter<FriendsContract.View> implements FriendsContract.Presenter {
 
     private final GetUserUseCase mGetUserUseCase;
+    private final GetFriendsStatusesUseCase mGetFriendsStatusesUseCase;
     private final ErrorHandler mErrorHandler;
     private final Set<Subscriber<User>> mSubscribers = new HashSet<>();
 
@@ -29,6 +30,7 @@ class FriendsPresenter extends BasePresenter<FriendsContract.View> implements Fr
                             @NonNull GetFriendsStatusesUseCase getFriendsStatusesUseCase,
                             @NonNull ErrorHandler errorHandler) {
         mGetUserUseCase = getUserUseCase;
+        mGetFriendsStatusesUseCase = getFriendsStatusesUseCase;
         mErrorHandler = errorHandler;
     }
 

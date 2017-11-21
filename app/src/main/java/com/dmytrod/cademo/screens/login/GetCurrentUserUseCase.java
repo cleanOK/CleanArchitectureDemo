@@ -10,7 +10,7 @@ import rx.Observable;
  * Created by Dmytro Denysenko on 20.11.17.
  */
 
-public class GetCurrentUserUseCase extends UseCase<Profile> {
+class GetCurrentUserUseCase extends UseCase<Profile> {
 
     private final LoginRepository mRepository;
 

@@ -6,9 +6,7 @@ import android.util.Log;
 import com.dmytrod.cademo.UseCase;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -26,7 +24,7 @@ class GetFriendsStatusesUseCase extends UseCase<UserStatus> {
 
     private final UserRepository mUserRepository;
     private final PublishSubject<UserStatus> mStatusPublishSubject = PublishSubject.create();
-    private final Map<Long, Subscription> mSubscribtionsIdMap = new HashMap<>();
+    private final Map<Long, Subscription> mSubscriptionsIdMap = new HashMap<>();
 
     GetFriendsStatusesUseCase(@NonNull UserRepository userRepository) {
         mUserRepository = userRepository;
@@ -38,21 +36,21 @@ class GetFriendsStatusesUseCase extends UseCase<UserStatus> {
     }
 
     void addUserId(final long userId) {
-            if (mSubscribtionsIdMap.get(userId) == null) {
+            if (mSubscriptionsIdMap.get(userId) == null) {
                 final Subscription subscription = Observable.interval(POLLING_DELAY, TimeUnit.SECONDS)
                         .flatMap(aLong -> mUserRepository.getUserStatus(userId))
-                        .filter(userStatus -> mSubscribtionsIdMap.containsKey(userStatus.getId()))
+                        .filter(userStatus -> mSubscriptionsIdMap.containsKey(userStatus.getId()))
                         .retry()
                         .distinct()
                         .timeout(POLLING_TIMEOUT, TimeUnit.SECONDS)
                         .subscribe(mStatusPublishSubject::onNext,
                                 throwable -> Log.e(TAG, "user status load failed, id = " + userId, throwable));
-                mSubscribtionsIdMap.put(userId, subscription);
+                mSubscriptionsIdMap.put(userId, subscription);
             }
     }
 
     void removeUserId(long userId) {
-        Subscription subscription = mSubscribtionsIdMap.remove(userId);
+        Subscription subscription = mSubscriptionsIdMap.remove(userId);
         if (subscription != null) {
             subscription.unsubscribe();
         }
@@ -60,10 +58,10 @@ class GetFriendsStatusesUseCase extends UseCase<UserStatus> {
 
     @Override
     public void unsubscribe() {
-        for (Subscription subscription : mSubscribtionsIdMap.values()) {
+        for (Subscription subscription : mSubscriptionsIdMap.values()) {
             subscription.unsubscribe();
         }
-        mSubscribtionsIdMap.clear();
+        mSubscriptionsIdMap.clear();
         super.unsubscribe();
     }
 }
