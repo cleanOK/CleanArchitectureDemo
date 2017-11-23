@@ -15,7 +15,7 @@ public class FriendsActivity extends AppCompatActivity implements FriendsContrac
     }
 
     @Override
-    public void displayFriend(@NonNull User user) {
+    public void displayFriend(@NonNull Friend user) {
 
     }
 

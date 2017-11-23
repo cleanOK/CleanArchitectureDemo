@@ -6,8 +6,8 @@ import android.util.Log;
 import com.dmytrod.cademo.screens.BasePresenter;
 import com.dmytrod.cademo.screens.ErrorHandler;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -20,38 +20,43 @@ import static android.content.ContentValues.TAG;
  */
 class FriendsPresenter extends BasePresenter<FriendsContract.View> implements FriendsContract.Presenter {
 
-    private final GetUserUseCase mGetUserUseCase;
     private final GetFriendsStatusesUseCase mGetFriendsStatusesUseCase;
+    private final GetFriendUseCase mGetFriendUseCase;
     private final ErrorHandler mErrorHandler;
-    private final Set<Subscriber<User>> mSubscribers = new HashSet<>();
+    private final Map<Long, Subscriber<Friend>> mIdSubscribersMap = new HashMap<>();
 
     @Inject
-    public FriendsPresenter(@NonNull GetUserUseCase getUserUseCase,
+    public FriendsPresenter(@NonNull GetFriendUseCase getFriendUseCase,
                             @NonNull GetFriendsStatusesUseCase getFriendsStatusesUseCase,
                             @NonNull ErrorHandler errorHandler) {
-        mGetUserUseCase = getUserUseCase;
+        mGetFriendUseCase = getFriendUseCase;
         mGetFriendsStatusesUseCase = getFriendsStatusesUseCase;
         mErrorHandler = errorHandler;
     }
 
     @Override
-    public void showFriend(long userId) {
-        Subscriber<User> friendSubscriber = new UserSubscriber(userId);
-        if (mSubscribers.add(friendSubscriber)) {
-            mGetUserUseCase.setUserId(userId);
-            mGetUserUseCase.execute(friendSubscriber);
+    public void loadFriend(long userId) {
+        Subscriber<Friend> friendSubscriber = mIdSubscribersMap.get(userId);
+        if (friendSubscriber == null) {
+            friendSubscriber = new UserSubscriber(userId);
+            mIdSubscribersMap.put(userId, friendSubscriber);
         }
+        mGetFriendUseCase.setUserId(userId);
+        mGetFriendUseCase.execute(friendSubscriber);
     }
 
     @Override
     public void destroy() {
-        for (Subscriber<User> subscriber : mSubscribers) {
+        for (Subscriber<Friend> subscriber : mIdSubscribersMap.values()) {
             subscriber.unsubscribe();
         }
+        mIdSubscribersMap.clear();
+        mGetFriendUseCase.unsubscribe();
+        mGetFriendsStatusesUseCase.unsubscribe();
         super.destroy();
     }
 
-    private class UserSubscriber extends Subscriber<User> {
+    private class UserSubscriber extends Subscriber<Friend> {
         private final long mUserId;
 
         private UserSubscriber(long userId) {
@@ -65,13 +70,13 @@ class FriendsPresenter extends BasePresenter<FriendsContract.View> implements Fr
 
         @Override
         public void onError(Throwable e) {
-            Log.e(TAG, "User loading failed, id =" + mUserId, e);
+            Log.e(TAG, "Friend loading failed, id =" + mUserId, e);
             e = mErrorHandler.handleException(e);
             getView().showError(e.getMessage());
         }
 
         @Override
-        public void onNext(User user) {
+        public void onNext(Friend user) {
             getView().displayFriend(user);
         }
     }

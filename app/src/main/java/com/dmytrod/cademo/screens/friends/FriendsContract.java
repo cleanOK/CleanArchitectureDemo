@@ -9,12 +9,12 @@ import android.support.annotation.NonNull;
 class FriendsContract {
     interface View {
 
-        void displayFriend(@NonNull User user);
+        void displayFriend(@NonNull Friend user);
 
         void showError(String message);
     }
     interface Presenter {
 
-        void showFriend(long userId);
+        void loadFriend(long userId);
     }
 }
